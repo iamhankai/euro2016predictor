@@ -8,7 +8,7 @@ The code is a little in chaos due to limited time. Maybe I'll update it.
 
 ## Prediction Results
 #### Champion
-**Germany** ![](http://d.hiphotos.baidu.com/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=e18b44a768224f4a43947b41689efb37/3bf33a87e950352a952c17895643fbf2b3118be5.jpg)
+**Germany** <img src="http://images.huanqiu.com/sarons/2012/12/d08afac79e262eeedec18bf20f3e8815.png" width = "20" height = "10" alt="Germany" align=center /> 
 
 #### Knockout Stage
 | round | team1 | team2 | result |
