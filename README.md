@@ -2,12 +2,13 @@
 Simply, this predictor is based on typical "feature+classifier" machine learning framework.
 - feature: ELO rating, win/draw/lose rate, goal/fumble from 1920
 - classifier: Random Forest Classifier
+The code is a little in chaos due to limited time. Maybe I'll update it.
 
 ## Prediction Results
-### Champion
-germany
+#### Champion
+**Germany**
 
-### Knockout Stage
+#### Knockout Stage
 | round | team1 | team2 | result |
 |-------|-------------|-------------|--------|
 | 16 | france | ukraine | 3 |
@@ -26,7 +27,7 @@ germany
 | 4 | germany | switzerland | 2 |
 | 2 | france | germany | -1 |
 
-### Group Stage
+#### Group Stage
 **Standings**
 
 | group | team | points | goal difference |
@@ -60,43 +61,42 @@ germany
 >((team1,team2),result)    
 (('france', 'romania'), 0)  
 (('france', 'albania'), 1)
-(('france', 'switzerland'), 0)
-(('romania', 'albania'), 2)
-(('romania', 'switzerland'), -1)
-(('albania', 'switzerland'), -2)
-(('england', 'russia'), 3)
-(('england', 'wales'), 0)
-(('england', 'slovakia'), 0)
-(('russia', 'wales'), 0)
-(('russia', 'slovakia'), 0)
-(('wales', 'slovakia'), -2)
-(('germany', 'ukraine'), 2)
-(('germany', 'poland'), 2)
-(('germany', 'northern ireland'), 0)
-(('ukraine', 'poland'), 0)
-(('ukraine', 'northern ireland'), 1)
-(('poland', 'northern ireland'), 1)
-(('spain', 'czechia'), 1)
-(('spain', 'turkey'), 1)
-(('spain', 'croatia'), 1)
-(('czechia', 'turkey'), 0)
-(('czechia', 'croatia'), 2)
-(('turkey', 'croatia'), 0)
-(('belgium', 'italy'), 1)
-(('belgium', 'ireland'), 0)
-(('belgium', 'sweden'), 1)
-(('italy', 'ireland'), 0)
-(('italy', 'sweden'), 1)
-(('ireland', 'sweden'), 1)
-(('portugal', 'iceland'), 2)
-(('portugal', 'austria'), 1)
-(('portugal', 'hungary'), 3)
-(('iceland', 'austria'), -2)
-(('iceland', 'hungary'), -1)
-(('austria', 'hungary'), 2)
+(('france', 'switzerland'), 0)  
+(('romania', 'albania'), 2)  
+(('romania', 'switzerland'), -1)  
+(('albania', 'switzerland'), -2)  
+(('england', 'russia'), 3)  
+(('england', 'wales'), 0)  
+(('england', 'slovakia'), 0)  
+(('russia', 'wales'), 0)  
+(('russia', 'slovakia'), 0)  
+(('wales', 'slovakia'), -2)  
+(('germany', 'ukraine'), 2)  
+(('germany', 'poland'), 2)  
+(('germany', 'northern ireland'), 0)  
+(('ukraine', 'poland'), 0)  
+(('ukraine', 'northern ireland'), 1)  
+(('poland', 'northern ireland'), 1)  
+(('spain', 'czechia'), 1)  
+(('spain', 'turkey'), 1)  
+(('spain', 'croatia'), 1)  
+(('czechia', 'turkey'), 0)  
+(('czechia', 'croatia'), 2)  
+(('turkey', 'croatia'), 0)  
+(('belgium', 'italy'), 1)  
+(('belgium', 'ireland'), 0)  
+(('belgium', 'sweden'), 1)  
+(('italy', 'ireland'), 0)  
+(('italy', 'sweden'), 1)  
+(('ireland', 'sweden'), 1)  
+(('portugal', 'iceland'), 2)  
+(('portugal', 'austria'), 1)  
+(('portugal', 'hungary'), 3)  
+(('iceland', 'austria'), -2)  
+(('iceland', 'hungary'), -1)  
+(('austria', 'hungary'), 2)  
 
 ## Thanks
-historcal data from [fedebayle](https://github.com/fedebayle/brazil2014_learning/blob/master/rawdata_elo.txt)
-
+historcal data from [fedebayle](https://github.com/fedebayle/brazil2014_learning/blob/master/rawdata_elo.txt)  
 euro2016 data from [nowaycomputer](https://github.com/nowaycomputer/euro2016/blob/master/data.csv)
 
