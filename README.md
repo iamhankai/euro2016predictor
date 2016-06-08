@@ -8,7 +8,7 @@ The code is a little in chaos due to limited time. Maybe I'll update it.
 
 ## Prediction Results
 #### Champion
-**Germany** <img src="http://images.huanqiu.com/sarons/2012/12/d08afac79e262eeedec18bf20f3e8815.png" width = "20" height = "10" alt="Germany" align=center /> 
+**Germany** <img src="http://images.huanqiu.com/sarons/2012/12/d08afac79e262eeedec18bf20f3e8815.png" width = "30" height = "18" alt="Germany" align=center /> 
 
 #### Knockout Stage
 | round | team1 | team2 | result |
