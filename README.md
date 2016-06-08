@@ -27,7 +27,8 @@ germany
 | 2 | france | germany | -1 |
 
 ### Group Stage
-Standings
+**Standings**
+
 | group | team | points | goal difference |
 |-------|------------------|--------|-----------------|
 | a | switzerland | 7 | 3 |
@@ -55,8 +56,8 @@ Standings
 | f | hungary | 3 | -4 |
 | f | iceland | 0 | -5 |
 
-Matches Details
-((team1,team2),result)
+**Matches Details**
+>((team1,team2),result)
 (('france', 'romania'), 0)
 (('france', 'albania'), 1)
 (('france', 'switzerland'), 0)
