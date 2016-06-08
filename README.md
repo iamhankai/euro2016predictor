@@ -1,12 +1,14 @@
 ## Euro Cup 2016 Predictor
 Simply, this predictor is based on typical "feature+classifier" machine learning framework.
+
 - feature: ELO rating, win/draw/lose rate, goal/fumble from 1920
 - classifier: Random Forest Classifier
+
 The code is a little in chaos due to limited time. Maybe I'll update it.
 
 ## Prediction Results
 #### Champion
-**Germany** ![](http://d.hiphotos.baidu.com/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=e18b44a768224f4a43947b41689efb37/3bf33a87e950352a952c17895643fbf2b3118be5.jpg =20)
+**Germany** ![](http://d.hiphotos.baidu.com/baike/c0%3Dbaike150%2C5%2C5%2C150%2C50/sign=e18b44a768224f4a43947b41689efb37/3bf33a87e950352a952c17895643fbf2b3118be5.jpg)
 
 #### Knockout Stage
 | round | team1 | team2 | result |
