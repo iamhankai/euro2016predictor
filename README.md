@@ -57,8 +57,8 @@ germany
 | f | iceland | 0 | -5 |
 
 **Matches Details**
->((team1,team2),result)
-(('france', 'romania'), 0)
+>((team1,team2),result)    
+(('france', 'romania'), 0)  
 (('france', 'albania'), 1)
 (('france', 'switzerland'), 0)
 (('romania', 'albania'), 2)
@@ -97,5 +97,6 @@ germany
 
 ## Thanks
 historcal data from [fedebayle](https://github.com/fedebayle/brazil2014_learning/blob/master/rawdata_elo.txt)
+
 euro2016 data from [nowaycomputer](https://github.com/nowaycomputer/euro2016/blob/master/data.csv)
 
