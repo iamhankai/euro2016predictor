@@ -5,7 +5,8 @@ Created on Wed Jun 08 16:31:45 2016
 @author: hankai
 """
 import numpy as np
-import history_count
+import read_history_count
+import read_euro2016info
 
 def read_id_nation_dict(sorted_path):
     id_nation_dict = {}
@@ -33,10 +34,10 @@ def read_final16_nation_list(id_path,id_nation_dict):
 
 
 def predict_match(score_gbdt,nation1,nation2):
-    nation1_record = history_count.get_nation1_record(nation_record_dict,nation1)
-    nation2_record = history_count.get_nation1_record(nation_record_dict,nation2)
-    elo1 = euro2016group.nation_info_dict[nation1]['elo']
-    elo2 = euro2016group.nation_info_dict[nation2]['elo']
+    nation1_record = read_history_count.get_nation1_record(nation_record_dict,nation1)
+    nation2_record = read_history_count.get_nation1_record(nation_record_dict,nation2)
+    elo1 = nation_info_dict[nation1]['elo']
+    elo2 = nation_info_dict[nation2]['elo']
     vec = [elo1,elo2]
     vec.extend(nation1_record)
     vec.extend(nation2_record)
@@ -69,34 +70,32 @@ def predict_winner(low,high,circle):
         return win2_idx
         
 
-sorted_path='promoted_nation.csv' 
-id_nation_dict = read_id_nation_dict(sorted_path) 
-id_path='./data/final16_id_list.txt'
-final16_nation_list = read_final16_nation_list(id_path,id_nation_dict)  
-import  group_stage
-euro2016group = group_stage.GroupStage()
-euro2016_path = './data/euro2016.csv'
-euro2016group.read_euro2016(euro2016_path) 
-
-# train
+## train
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.cross_validation import cross_val_score
 
 history_path = './data/rawdata_elo.txt'
-nation_record_dict=history_count.nation_record_count(history_path)
-train_X,train_y = history_count.read_train(history_path,True)  
+nation_record_dict = read_history_count.nation_record_count(history_path)
+train_X,train_y = read_history_count.read_train(history_path,True)  
 score_gbdt =  RandomForestClassifier(n_estimators=50, max_depth=None,
     min_samples_split=2, random_state=666)
 scores = cross_val_score(score_gbdt, train_X, train_y)
-print scores.mean()
+print 'cross validation accuracy: ',scores.mean()
 # The mean square error
 score_gbdt.fit(train_X, train_y)
 print("trainset mean square error: %.2f" % np.mean((score_gbdt.predict(train_X) - train_y) ** 2))
 
+## read vs list
+sorted_path='./result/promoted_nation.csv' # protemoted teams
+id_nation_dict = read_id_nation_dict(sorted_path) 
+id_path='./data/final16_id_list.txt' # round16 vs list
+final16_nation_list = read_final16_nation_list(id_path,id_nation_dict)  
+euro2016_path = './data/euro2016.csv' # euro2016 info
+nation_info_dict,group_nation_dict = read_euro2016info.read_euro2016(euro2016_path)
 
-# predict 
+## predict 
 print 'Knockout'
-wf = open('./knockout.csv','wb')
+wf = open('./result/knockout_result.csv','wb')
 champion_id = predict_winner(0,15,0)
 print id_nation_dict[final16_nation_list[champion_id]]
 wf.close()
