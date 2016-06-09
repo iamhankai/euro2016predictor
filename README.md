@@ -1,7 +1,7 @@
 ## Euro Cup 2016 Predictor
 Simply, this predictor is based on typical "feature+classifier" machine learning framework.
 
-- feature: ELO rating, win/draw/lose rate, goal/fumble from 1920
+- feature: ELO rating, win/draw/lose rate, goal/lost-goal from 1920
 - label: goal difference between team1 and team2
 - classifier: Random Forest Classifier
 
