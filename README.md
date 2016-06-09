@@ -9,6 +9,7 @@ The code is a little in chaos due to limited time. Maybe I'll update it.
 
 ## Run
 environment: Python2.7, scikit-learn package;
+
 1. run `group_stage.py` to get group stage results (./result/nation_point.csv and ./result/promoted_nation.csv);
 2. run `knockout_stage.py` to get final results (./result/knockout_result.csv).
 
