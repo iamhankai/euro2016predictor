@@ -9,7 +9,7 @@ def nation_record_count(path):
     nation_record_dict = {}
     rf = open(path,'rb')
     for line in rf.readlines():
-        str_list = line.split('\t')
+        str_list = line.strip().split('\t')
         nation1 = str_list[0].lower()
         nation2 = str_list[1].lower()
         goal1 = float(str_list[2])
@@ -51,7 +51,7 @@ def read_train(history_path,is_knockout):
     y = []
     rf = open(history_path,'rb')
     for line in rf.readlines():
-        str_list = line.split('\t')
+        str_list = line.strip().split('\t')
         nation1 = str_list[0].lower()
         nation2 = str_list[1].lower()
         # history record

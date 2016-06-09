@@ -20,7 +20,7 @@ class GroupStage:
         rf = open(path,'rb')
         rf.readline()
         for line in rf.readlines():
-            str_list = line.split(',')
+            str_list = line.strip().split(',')
             # group-nation
             self.group_nation_dict.setdefault(str_list[0],[]).append(str_list[2])
             # nation-info

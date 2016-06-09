@@ -11,21 +11,23 @@ def read_id_nation_dict(sorted_path):
     id_nation_dict = {}
     rf = open(sorted_path,'rb')
     for line in rf.readlines():
-        str_list = line.split(',')
+        str_list = line.strip().split(',')
         id_nation_dict.setdefault(str_list[0],str_list[1])
     return id_nation_dict
  
 def read_final16_nation_list(id_path,id_nation_dict):
     final16_nation_list = []
     rf = open(id_path,'rb')
+    selected_3rd_list = []
     for line in rf.readlines():
-        str_list = line.split(',')
+        str_list = line.strip().split(',')
         if len(str_list)<2:
             final16_nation_list.append(line.strip())
-        else:
+        else: # gourp 3rd
             for stri in str_list:
-                if stri in id_nation_dict.keys():
+                if (stri in id_nation_dict.keys()) and (stri not in selected_3rd_list):
                     final16_nation_list.append(stri)
+                    selected_3rd_list.append(stri)
                     break
     return final16_nation_list
 
