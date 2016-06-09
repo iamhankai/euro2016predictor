@@ -5,6 +5,11 @@ Simply, this predictor is based on typical "feature+classifier" machine learning
 - label: goal difference between team1 and team2
 - classifier: Random Forest Classifier
 
+## Run
+- environment: Python2.7, scikit-learn package;
+- run group_stage.py to get group stage results (nation_point.csv and promoted_nation.csv);
+- run knockout_stage.py to get final results (knockout.csv).
+
 The code is a little in chaos due to limited time. Maybe I'll update it.
 
 ## Prediction Results
