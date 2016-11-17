@@ -5,8 +5,8 @@ Created on Wed Jun 08 16:31:45 2016
 @author: hankai
 """
 import numpy as np
-import read_history_count
-import read_euro2016info
+import data_loader.read_history_count as read_history_count
+import data_loader.read_euro2016info as read_euro2016info
 
 def read_id_nation_dict(sorted_path):
     id_nation_dict = {}

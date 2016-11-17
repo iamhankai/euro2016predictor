@@ -6,9 +6,8 @@ Created on Wed Jun 08 15:27:53 2016
 """
 
 import numpy as np
-import read_history_count
-import read_euro2016info
-
+import data_loader.read_history_count as read_history_count
+import data_loader.read_euro2016info as read_euro2016info
             
     
 if __name__=='__main__':    
