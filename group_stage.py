@@ -8,7 +8,53 @@ Created on Wed Jun 08 15:27:53 2016
 import numpy as np
 import data_loader.read_history_count as read_history_count
 import data_loader.read_euro2016info as read_euro2016info
-            
+
+def points_count(vs_list, result):
+	## points count
+    nation_point_goal_dict = {}
+    for i in range(len(result)):
+        print(vs_list[i],result[i])
+        nation1 = vs_list[i][0]
+        nation2 = vs_list[i][1]
+        nation_point_goal_dict.setdefault(nation1,[0,0])
+        nation_point_goal_dict.setdefault(nation2,[0,0])
+        nation_point_goal_dict[nation1][1]+=result[i]
+        nation_point_goal_dict[nation2][1]-=result[i]
+        if result[i]>0:
+            nation_point_goal_dict[nation1][0]+=3
+        elif result[i]<0:
+            nation_point_goal_dict[nation2][0]+=3
+        else:
+            nation_point_goal_dict[nation1][0]+=1
+            nation_point_goal_dict[nation2][0]+=1
+    # sort
+    nation_point_goal_dict=sorted(nation_point_goal_dict.items(), key=lambda d: d[1],reverse=True)
+    return nation_point_goal_dict
+	
+def eurocup24promotion(group_sorted_dict, promoted_file_path):
+    promoted_file=open('./result/promoted_nation.csv','wb')
+    group3rd_dict={}
+	# top 2 teams in each group
+    for group in group_sorted_dict.keys():
+        cnt = 1
+        for (nation,point_goal) in group_sorted_dict[group]:
+            if cnt>3:
+                continue
+            if cnt==3:
+                group3rd_dict.setdefault(group+str(cnt),(nation,point_goal))
+                continue
+            promoted_file.write(group+str(cnt)+','+nation+','+str(point_goal[0])+','+str(point_goal[1])+'\n')
+            cnt+=1
+	# best 4 3rd team in all groups
+    group3rd_dict=sorted(group3rd_dict.items(), key=lambda d: d[1][1],reverse=True)
+    cnt = 1
+    for (groupid,(nation,point_goal)) in group3rd_dict:        
+        if cnt>4:
+            break
+        promoted_file.write(groupid+','+nation+','+str(point_goal[0])+','+str(point_goal[1])+'\n')
+        cnt+=1
+    promoted_file.close() 
+	
     
 if __name__=='__main__':    
     from sklearn.ensemble import RandomForestClassifier
@@ -47,28 +93,12 @@ if __name__=='__main__':
                 # save all samples
                 test_X.append(vec)
     test_y = score_gbdt.predict(test_X)
-    
+
     ## points count
-    nation_point_goal_dict = {}
-    for i in range(len(test_y)):
-        print(vs_list[i],test_y[i])
-        nation1 = vs_list[i][0]
-        nation2 = vs_list[i][1]
-        nation_point_goal_dict.setdefault(nation1,[0,0])
-        nation_point_goal_dict.setdefault(nation2,[0,0])
-        nation_point_goal_dict[nation1][1]+=test_y[i]
-        nation_point_goal_dict[nation2][1]-=test_y[i]
-        if test_y[i]>0:
-            nation_point_goal_dict[nation1][0]+=3
-        elif test_y[i]<0:
-            nation_point_goal_dict[nation2][0]+=3
-        else:
-            nation_point_goal_dict[nation1][0]+=1
-            nation_point_goal_dict[nation2][0]+=1
-    # sort
-    nation_point_goal_dict=sorted(nation_point_goal_dict.items(), key=lambda d: d[1],reverse=True)
+    nation_point_goal_dict = points_count(vs_list,test_y)
+	
     # group analysis and write it to a file
-    group_sorted_dict = {}        
+    group_sorted_dict = {}
     wf = open('./result/nation_point.csv','wb')
     for (nation,point_goal) in nation_point_goal_dict:
         group = nation_info_dict[nation]['group']
@@ -78,25 +108,6 @@ if __name__=='__main__':
     wf.close()  
     
     ## promote
-    promoted_file=open('./result/promoted_nation.csv','wb')
-    group3rd_dict={}
-    for group in group_sorted_dict.keys():
-        cnt = 1
-        for (nation,point_goal) in group_sorted_dict[group]:
-            if cnt>3:
-                continue
-            if cnt==3:
-                group3rd_dict.setdefault(group+str(cnt),(nation,point_goal))
-                continue
-            promoted_file.write(group+str(cnt)+','+nation+','+str(point_goal[0])+','+str(point_goal[1])+'\n')
-            cnt+=1
-    group3rd_dict=sorted(group3rd_dict.items(), key=lambda d: d[1][1],reverse=True)
-    cnt = 1
-    for (groupid,(nation,point_goal)) in group3rd_dict:        
-        if cnt>4:
-            break
-        promoted_file.write(groupid+','+nation+','+str(point_goal[0])+','+str(point_goal[1])+'\n')
-        cnt+=1
-    promoted_file.close()    
-    
+    promoted_file_path='./result/promoted_nation.csv'
+    eurocup24promotion(group_sorted_dict, promoted_file_path)
 
