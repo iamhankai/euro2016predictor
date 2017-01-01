@@ -33,7 +33,7 @@ def read_final16_nation_list(id_path,id_nation_dict):
     return final16_nation_list
 
 
-def predict_match(score_gbdt,nation1,nation2):
+def predict_match(score_model,nation1,nation2):
     nation1_record = read_history_count.get_nation1_record(nation_record_dict,nation1)
     nation2_record = read_history_count.get_nation1_record(nation_record_dict,nation2)
     elo1 = nation_info_dict[nation1]['elo']
@@ -41,15 +41,16 @@ def predict_match(score_gbdt,nation1,nation2):
     vec = [elo1,elo2]
     vec.extend(nation1_record)
     vec.extend(nation2_record)
-    score = score_gbdt.predict(np.array(vec).reshape(1, -1))
+    score = score_model.predict(np.array(vec).reshape(1, -1))
     return score
     
 def predict_winner(low,high,circle):
     circle += 1
     if high-low<2:
+        print low,high
         nation1 = id_nation_dict[final16_nation_list[low]]
         nation2 = id_nation_dict[final16_nation_list[high]]
-        score = predict_match(score_gbdt,nation1,nation2)
+        score = predict_match(score_model,nation1,nation2)
         print pow(2,circle),(nation1,nation2),score
         wf.write(str(pow(2,circle))+','+nation1+','+nation2+','+str(score[0])+'\n')
         if score>=0:
@@ -61,7 +62,7 @@ def predict_winner(low,high,circle):
     win2_idx = predict_winner(mid+1,high,circle)
     nation1 = id_nation_dict[final16_nation_list[win1_idx]]
     nation2 = id_nation_dict[final16_nation_list[win2_idx]]
-    score = predict_match(score_gbdt,nation1,nation2)
+    score = predict_match(score_model,nation1,nation2)
     print pow(2,circle),(nation1,nation2),score
     wf.write(str(pow(2,circle))+','+nation1+','+nation2+','+str(score[0])+'\n')
     if score>=0:
@@ -69,34 +70,40 @@ def predict_winner(low,high,circle):
     else:
         return win2_idx
         
+if __name__=='__main__':
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.cross_validation import cross_val_score
 
-## train
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.cross_validation import cross_val_score
+    ## train
+    # load training data
+    print('loading training data...')
+    history_path = './data/rawdata_elo.txt'
+    nation_record_dict = read_history_count.nation_record_count(history_path)
+    train_X,train_y = read_history_count.read_train(history_path,True)
+    # train
+    print('start training...')
+    score_model =  RandomForestClassifier(n_estimators=50, max_depth=None,
+        min_samples_split=2, random_state=666)
+    scores = cross_val_score(score_model, train_X, train_y)
+    print('cross validation score:%.4f' % scores.mean())
+    # The mean square error
+    score_model.fit(train_X, train_y)
+    print('trainset mean square error: %.2f' % np.mean((score_model.predict(train_X) - train_y) ** 2))
 
-history_path = './data/rawdata_elo.txt'
-nation_record_dict = read_history_count.nation_record_count(history_path)
-train_X,train_y = read_history_count.read_train(history_path,True)  
-score_gbdt =  RandomForestClassifier(n_estimators=50, max_depth=None,
-    min_samples_split=2, random_state=666)
-scores = cross_val_score(score_gbdt, train_X, train_y)
-print 'cross validation accuracy: ',scores.mean()
-# The mean square error
-score_gbdt.fit(train_X, train_y)
-print("trainset mean square error: %.2f" % np.mean((score_gbdt.predict(train_X) - train_y) ** 2))
+    ## predict
+    # load prediction data
+    print('loading prediction data...')
+    sorted_path='./result/promoted_nation.csv' # protemoted teams
+    id_nation_dict = read_id_nation_dict(sorted_path)
+    id_path='./data/final16_id_list.txt' # round16 vs list
+    final16_nation_list = read_final16_nation_list(id_path,id_nation_dict)
+    euro2016_path = './data/euro2016.csv' # euro2016 info
+    nation_info_dict,group_nation_dict = read_euro2016info.read_euro2016(euro2016_path)
 
-## read vs list
-sorted_path='./result/promoted_nation.csv' # protemoted teams
-id_nation_dict = read_id_nation_dict(sorted_path) 
-id_path='./data/final16_id_list.txt' # round16 vs list
-final16_nation_list = read_final16_nation_list(id_path,id_nation_dict)  
-euro2016_path = './data/euro2016.csv' # euro2016 info
-nation_info_dict,group_nation_dict = read_euro2016info.read_euro2016(euro2016_path)
-
-## predict 
-print 'Knockout'
-wf = open('./result/knockout_result.csv','wb')
-champion_id = predict_winner(0,15,0)
-print id_nation_dict[final16_nation_list[champion_id]]
-wf.close()
+    ## predict
+    print('Knockout prediction results:')
+    wf = open('./result/knockout_result.csv','wb')
+    champion_id = predict_winner(0,15,0)
+    print id_nation_dict[final16_nation_list[champion_id]]
+    wf.close()
 

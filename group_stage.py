@@ -61,18 +61,24 @@ if __name__=='__main__':
     from sklearn.cross_validation import cross_val_score
         
     ## train
+    # load training data
+    print('loading training data...')
     history_path = './data/rawdata_elo.txt'
     nation_record_dict = read_history_count.nation_record_count(history_path)
-    train_X,train_y = read_history_count.read_train(history_path,False)  
-    score_gbdt =  RandomForestClassifier(n_estimators=50, max_depth=None,
+    train_X,train_y = read_history_count.read_train(history_path,False)
+    # train
+    print('start training...')
+    score_model =  RandomForestClassifier(n_estimators=50, max_depth=None,
         min_samples_split=2, random_state=666)
-    scores = cross_val_score(score_gbdt, train_X, train_y)
-    print scores.mean() 
+    scores = cross_val_score(score_model, train_X, train_y)
+    print('cross validation score:%.4f' % scores.mean())
     # The mean square error
-    score_gbdt.fit(train_X, train_y)
-    print("trainset mean square error: %.2f" % np.mean((score_gbdt.predict(train_X) - train_y) ** 2))
+    score_model.fit(train_X, train_y)
+    print("trainset mean square error: %.2f" % np.mean((score_model.predict(train_X) - train_y) ** 2))
     
-    ## predict    
+    ## predict
+    # load prediction data
+    print('loading prediction data...')
     euro2016_path = './data/euro2016.csv'
     nation_info_dict,group_nation_dict = read_euro2016info.read_euro2016(euro2016_path)
     test_X = []
@@ -92,12 +98,14 @@ if __name__=='__main__':
                 vec.extend(nation2_record)
                 # save all samples
                 test_X.append(vec)
-    test_y = score_gbdt.predict(test_X)
+    # predict
+    print('predicting results:')
+    test_y = score_model.predict(test_X)
 
-    ## points count
+    # points count
     nation_point_goal_dict = points_count(vs_list,test_y)
 	
-    # group analysis and write it to a file
+    ## group analysis and write it to a file
     group_sorted_dict = {}
     wf = open('./result/nation_point.csv','wb')
     for (nation,point_goal) in nation_point_goal_dict:
