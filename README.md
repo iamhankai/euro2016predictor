@@ -8,7 +8,7 @@ Simply, this predictor is based on typical "feature+classifier" machine learning
 The code is a little in chaos due to limited time. Maybe I'll update it.
 
 ## Run
-environment: Python2.7, scikit-learn package;
+environment: Python2.7 with scikit-learn package installed;
 
 1. run `group_stage.py` to get group stage results (./result/nation_point.csv and ./result/promoted_nation.csv);
 2. run `knockout_stage.py` to get final results (./result/knockout_result.csv).
@@ -108,4 +108,4 @@ environment: Python2.7, scikit-learn package;
 ## Thanks
 historcal data from [fedebayle](https://github.com/fedebayle/brazil2014_learning/blob/master/rawdata_elo.txt)  
 euro2016 data from [nowaycomputer](https://github.com/nowaycomputer/euro2016/blob/master/data.csv)
-
+promotion rules of euro2016 from [Sohu](http://sports.sohu.com/20151014/n423094484.shtml)
