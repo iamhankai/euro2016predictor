@@ -8,28 +8,30 @@ import numpy as np
 import data_loader.read_history_count as read_history_count
 import data_loader.read_euro2016info as read_euro2016info
 
+all_best3rd = ['abcd','abce','abcf','abde','abdf','abef','acde','acdf','acef',
+               'adef','bcde','bcdf','bcef','bdef','cdef']
+
 def read_id_nation_dict(sorted_path):
     id_nation_dict = {}
+    four_best3rd = ''
     rf = open(sorted_path,'rb')
     for line in rf.readlines():
         str_list = line.strip().split(',')
         id_nation_dict.setdefault(str_list[0],str_list[1])
-    return id_nation_dict
+        if(str_list[0][1]=='3'):
+            four_best3rd += str_list[0][0]
+    four_best3rd = ''.join((lambda x:(x.sort(),x)[1])(list(four_best3rd)))
+    return id_nation_dict,four_best3rd
  
-def read_final16_nation_list(id_path,id_nation_dict):
+def read_final16_nation_list(id_path,id_nation_dict,four_best3rd):
     final16_nation_list = []
     rf = open(id_path,'rb')
-    selected_3rd_list = []
     for line in rf.readlines():
         str_list = line.strip().split(',')
         if len(str_list)<2:
             final16_nation_list.append(line.strip())
         else: # gourp 3rd
-            for stri in str_list:
-                if (stri in id_nation_dict.keys()) and (stri not in selected_3rd_list):
-                    final16_nation_list.append(stri)
-                    selected_3rd_list.append(stri)
-                    break
+            final16_nation_list.append(str_list[all_best3rd.index(four_best3rd)])
     return final16_nation_list
 
 
@@ -94,9 +96,9 @@ if __name__=='__main__':
     # load prediction data
     print('loading prediction data...')
     sorted_path='./result/promoted_nation.csv' # protemoted teams
-    id_nation_dict = read_id_nation_dict(sorted_path)
+    id_nation_dict,four_best3rd = read_id_nation_dict(sorted_path)
     id_path='./data/final16_id_list.txt' # round16 vs list
-    final16_nation_list = read_final16_nation_list(id_path,id_nation_dict)
+    final16_nation_list = read_final16_nation_list(id_path,id_nation_dict,four_best3rd)
     euro2016_path = './data/euro2016.csv' # euro2016 info
     nation_info_dict,group_nation_dict = read_euro2016info.read_euro2016(euro2016_path)
 
